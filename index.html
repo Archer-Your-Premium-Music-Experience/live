@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archer | Your Premium Music Experience</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link rel="icon" href="/frontend/favicon/favicon.ico" type="image/x-icon">
+    <meta name="description" content="Archer - Your Premium Music Experience. Discover, play, and share your favorite music.">
+    <meta name="keywords" content="Archer, music, premium, experience, songs, artists, playlists">
+    <meta name="author" content="Archer Team">
+    <meta property="og:title" content="Archer | Your Premium Music Experience">
+    <meta property="og:description" content="Discover, play, and share your favorite music with Archer.">
+    <meta property="og:image" content="/frontend/favicon/favicon.ico">
+    <meta property="og:url" content="https://archer.github.io">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Archer | Your Premium Music Experience">
+    <meta name="twitter:description" content="Discover, play, and share your favorite music with Archer.">
+    <meta name="twitter:image" content="/frontend/favicon/favicon.ico">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        :root {
+            --primary: #ff007f;
+            --primary-dark: #d6006b;
+            --secondary: #ff4500;
+            --accent: #00ff7f;
+            --background: #000000;
+            --surface: #1a1a1a;
+            --surface-dark: #0d0d0d;
+            --text: #ffffff;
+            --text-muted: #b3b3b3;
+            --success: #00ff00;
+            --warning: #ffcc00;
+            --error: #ff0000;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--background), var(--surface-dark));
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-size: 1.5rem; /* Updated font size */
+            cursor: none; /* Hide default cursor */
+        }
+
+        .grain {
+            position: fixed;
+            top: -150%;
+            left: -50%;
+            right: -50%;
+            bottom: -150%;
+            width: 400%;
+            height: 400vh;
+            background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwBAMAAAClLOS0AAAAElBMVEUAAAD8/vz08vT09vT8+vzs7uxH16TeAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAAuFJREFUOI0Vk+3NLiEIRG1B8ClAYAsQ2AIEt4D9ePtv5Xp/mZgYJ2fOFJKEfInkVWY2aglmQFkimRTV7MblYyVqD7HXyhKsSuPX12MeDhRHLtGvRG+P+B/S0Vu4OswR9tmvwNPyhdCDbVayJGads/WiUWcjCvCnruTBNHS9gmX2VzVbk7ZvB1gb1hkWFGl+A/n+/FowcO34U/XvKqZ/fHY+6vgRfU92XrOBUbGeeDfQmjWjdrK+frc6FdGReQhfSF5JvR29O2QrfNw1huTwlgsyXLo0u+5So82sgv7tsFZR2nxB6lXiquHrfD8nfYZ9SeT0LiuvSoVrxGY16pCNRZKqvwWsn5OHypPBELzohMCaRaa0ceTHYqe7X/gfJEEtKFbJpWoNqO+aS1cuTykGPpK5Ga48m6L3NefTr013qNB3oKzxyXoNVBmKb3UXFKHs6CkwtygHb8JvcV6AJwQmMJ+B6yhPphKBxQdVZ7rQF+oQrHHxqItE8dYUZr+EnJ+N1gDjcXEJ7CUBfCIAJ2QAxwZwxQRwqgAOFcDp+xfRwM8WWhBhGBShGoshMYEEGxUhwSRUhAQrFcHGBAWGijAphTkVRpOYp9LjCsGEikAICcTMMR8QhSV/2XJtwsfQGK2L4CaO6ImDHhLYQgq6+aH+qXl+2ZzQ3MD0hKatXNCtK6GQ866MaRyjmR9lPVGS5jmjYj7iwJxvx1rB6q5xZwuOB8yrPB8rbPXYFhasq7Dqkz45dRQ2pa7Di0N1BfqKrGHHVewPXduQWEP/QDlBvV2L0q7C6pPO3CqMOmRjkeQiB9WlELq4E2wS541Y+44cwhepz6Xn7cqhGC+yqIZj9WjUmS4oxHUXw+YqrKMw2WkGMtRNne2sDImYNaX5yY5RWKF4MvY4sQxUiLsr6srvFBhFFVg/cSWSGX2QsLmKYxftVPwz/m4INhXLIfd6VGwvvodQ+p2hPwhO38Gh1GygAAAAAElFTkSuQmCC');
+            animation: grain 1s steps(6) infinite;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+            transform: scale(0);
+            animation: ripple-animation 0.6s linear;
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            backdrop-filter: blur(20px);
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 30px -5px rgba(255, 0, 127, 0.5);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .brand {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 255, 127, 0.2);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            border: 1px solid rgba(0, 255, 127, 0.3);
+        }
+
+        .status-badge .pulse {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 3rem;
+        }
+
+        .player-section {
+            background: linear-gradient(135deg, var(--surface), var(--surface-dark));
+            border-radius: 2rem;
+            padding: 2rem;
+            box-shadow: 0 25px 50px -12px rgba(255, 69, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .player-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .visualizer-container {
+            height: 150px;
+            margin: 2rem 0;
+            padding: 1rem;
+            background: rgba(255, 69, 0, 0.2);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            position: relative;
+        }
+
+        .visualizer-bar {
+            flex: 1;
+            height: 100%;
+            background: linear-gradient(180deg, var(--primary), var (--accent));
+            border-radius: 4px;
+            transform-origin: bottom;
+            transition: transform 0.2s ease;
+            opacity: 0.8;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -10px rgba(79, 70, 229, 0.5);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, var(--surface), var(--surface-dark));
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -20px rgba(255, 69, 0, 0.3);
+        }
+
+        .metric-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .metric-label {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .metric-trend {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .trend-up {
+            color: var(--success);
+        }
+
+        .trend-down {
+            color: var(--error);
+        }
+
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -10%); }
+            30% { transform: translate(3%, -15%); }
+            50% { transform: translate(12%, 9%); }
+            70% { transform: translate(9%, 4%); }
+            90% { transform: translate(-1%, 7%); }
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+                padding: 1rem;
+            }
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface-dark);
+            color: var (--text);
+        }
+
+        .search-bar button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary-dark);
+            color: white;
+            cursor: pointer;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .volume-control input {
+            flex: 1;
+            background: var(--surface-dark);
+        }
+
+        .dark-mode-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .dark-mode-toggle input {
+            width: 40px;
+            height: 20px;
+            appearance: none;
+            background: var(--surface-dark);
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .dark-mode-toggle input:checked::before {
+            transform: translateX(20px);
+        }
+
+        .dark-mode-toggle input::before {
+            content: '';
+            width: 18px;
+            height: 18px;
+            background: var(--secondary);
+            border-radius: 50%;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+            transition: transform 0.3s ease;
+        }
+
+        .lyrics-display {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: var(--surface-dark);
+            border-radius: 1rem;
+            color: var(--text);
+        }
+
+        .comments-section {
+            margin-top: 2rem;
+        }
+
+        .comments-section h3 {
+            margin-bottom: 1rem;
+        }
+
+        .comments-section textarea {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface-dark);
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .comments-section button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary-dark);
+            color: white;
+            cursor: pointer;
+        }
+
+        .recommendations {
+            margin-top: 2rem;
+        }
+
+        .recommendations h3 {
+            margin-bottom: 1rem;
+        }
+
+        .recommendations ul {
+            list-style: none;
+            padding: 0;
+            background: var(--surface-dark);
+        }
+
+        .recommendations li {
+            padding: 0.5rem 0;
+        }
+
+        .download-option {
+            margin-top: 2rem;
+        }
+
+        .download-option button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary-dark);
+            color: white;
+            cursor: pointer;
+        }
+
+        .kid-theme {
+            --primary: #ff69b4;
+            --primary-dark: #ff1493;
+            --secondary: #ff6347;
+            --accent: #ffd700;
+            --background: #f0e68c;
+            --surface: #ffdab9;
+            --surface-dark: #ffdead;
+            --text: #000000;
+            --text-muted: #696969;
+            --success: #32cd32;
+            --warning: #ff8c00;
+            --error: #ff4500;
+        }
+
+        .coffee-theme {
+            --primary: #6f4e37;
+            --primary-dark: #4b3621;
+            --secondary: #d2b48c;
+            --accent: #c0a080;
+            --background: #3e2723;
+            --surface: #5d4037;
+            --surface-dark: #4e342e;
+            --text: #ffffff;
+            --text-muted: #b3b3b3;
+            --success: #8bc34a;
+            --warning: #ffeb3b;
+            --error: #f44336;
+        }
+
+        .footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            padding: 1.5rem 2rem;
+            border-radius: 1.5rem;
+            margin-top: 3rem;
+            box-shadow: 0 10px 30px -5px rgba(255, 0, 127, 0.5);
+            text-align: center;
+            color: var(--text);
+            font-weight: 500;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-content::before,
+        .footer-content::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-follow {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-follow a {
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer-follow a:hover {
+            color: var(--primary);
+        }
+
+        .footer-social {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .footer-social a {
+            margin: 0 0.5rem;
+            color: var(--text);
+            transition: color 0.3s ease;
+        }
+
+        .footer-social a:hover {
+            color: var(--primary);
+        }
+
+        .back-to-top {
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary-dark);
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .back-to-top:hover {
+            background: var(--primary);
+        }
+
+        .seo-form {
+            display: none;
+            background: var(--surface-dark);
+            padding: 2rem;
+            border-radius: 1rem;
+            margin-top: 2rem;
+            color: var(--text);
+            box-shadow: 0 10px 30px -5px rgba(255, 0, 127, 0.5);
+        }
+
+        .seo-form input,
+        .seo-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface);
+            color: var(--text);
+            font-size: 1.5rem; /* Updated font size */
+        }
+
+        .seo-form button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary-dark);
+            color: white;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+            font-size: 1.5rem; /* Updated font size */
+        }
+
+        .seo-form button:hover {
+            background: var(--primary);
+        }
+
+        .seo-form h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .btn-show-seo {
+            margin-top: 2rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 1rem;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-size: 1.5rem; /* Updated font size */
+            transition: background 0.3s ease;
+        }
+
+        .btn-show-seo:hover {
+            background: var(--primary-dark);
+        }
+
+        .deploy-info {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--surface-dark);
+            border-radius: 1rem;
+            color: var(--text);
+            box-shadow: 0 10px 30px -5px rgba(255, 0, 127, 0.5);
+            font-size: 1.5rem; /* Updated font size */
+        }
+
+        .deploy-info h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .deploy-info p,
+        .deploy-info ol {
+            margin-bottom: 1rem;
+        }
+
+        .deploy-info ol {
+            padding-left: 1.5rem;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header, .footer, .status-badge, .search-bar, .controls, .comments-section, .recommendations, .download-option, .dark-mode-toggle, .volume-control, .lyrics-display, .metric-card, .deploy-info, .seo-form {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+            color: var(--text);
+            border-radius: 1rem;
+            padding: 1rem;
+            box-shadow: 0 10px 30px -5px rgba(255, 0, 127, 0.5);
+        }
+
+        .header h1, .footer-content, .footer-follow, .footer-social, .btn, .btn-show-seo, .seo-form h3, .deploy-info h3, .metric-value, .metric-label, .metric-trend, .comments-section h3, .recommendations h3, .download-option button, .dark-mode-toggle label, .volume-control label, .lyrics-display h3, .status-badge, .search-bar input, .search-bar button, .controls button, .comments-section button, .recommendations ul, .recommendations li, .seo-form input, .seo-form textarea, .seo-form button, .deploy-info p, .deploy-info ol {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <div class="grain"></div>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <img src="pic/logo.png" alt="Archer Logo" style="height: 40px;">
+                <i class="fas fa-waveform logo-icon"></i>
+                <h1 class="brand">Archer</h1>
+            </div>
+            <div class="status-badge">
+                <div class="pulse"></div>
+                Live Studio
+            </div>
+        </header>
+        <div class="search-bar">
+            <input type="text" placeholder="Search for songs or artists">
+            <button>Search</button>
+        </div>
+        <main class="main-grid">
+            <section class="player-section animate__animated animate__fadeIn">
+                <iframe
+                    title="Coolify Premium Player"
+                    src="https://open.spotify.com/embed/playlist/2ueiebiHlcrONR0YLhVryw?utm_source=generator&theme=0"
+                    frameBorder="0"
+                    allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                    loading="lazy"
+                    style="width: 100%; height: 352px; border-radius: 16px;"
+                ></iframe>
+
+                <div class="visualizer-container" id="visualizer"></div>
+
+                <div class="controls">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-play"></i>
+                        Play
+                    </button>
+                    <button class="btn btn-secondary">
+                        <i class="fas fa-pause"></i>
+                        Pause
+                    </button>
+                </div>
+                <div class="volume-control">
+                    <label for="volume">Volume:</label>
+                    <input type="range" id="volume" name="volume" min="0" max="100">
+                </div>
+                <div class="dark-mode-toggle">
+                    <label for="dark-mode">Dark Mode:</label>
+                    <input type="checkbox" id="dark-mode">
+                </div>
+                <div class="lyrics-display">
+                    <h3>Lyrics</h3>
+                    <p id="lyrics">No lyrics available</p>
+                </div>
+                <div class="comments-section">
+                    <h3>Comments</h3>
+                    <textarea placeholder="Leave a comment"></textarea>
+                    <button>Submit</button>
+                </div>
+                <div class="recommendations">
+                    <h3>Recommendations</h3>
+                    <ul id="recommendations-list">
+                        <li>No recommendations available</li>
+                    </ul>
+                </div>
+                <div class="download-option">
+                    <button>Download</button>
+                </div>
+                <div class="seo-form" id="seo-form">
+                    <h3 class="gradient-text">SEO Information</h3>
+                    <label for="seo-title" class="gradient-text">Title:</label>
+                    <input type="text" id="seo-title" value="Archer | Music Experience">
+                    <label for="seo-description" class="gradient-text">Description:</label>
+                    <textarea id="seo-description">Archer - Your Premium Music Experience. Discover, play, and share your favorite music.</textarea>
+                    <label for="seo-keywords" class="gradient-text">Keywords:</label>
+                    <input type="text" id="seo-keywords" value="Archer, music, premium, experience, songs, artists, playlists">
+                    <label for="seo-author" class="gradient-text">Author:</label>
+                    <input type="text" id="seo-author" value="Archer Team">
+                    <label for="seo-og-title" class="gradient-text">OG Title:</label>
+                    <input type="text" id="seo-og-title" value="Archer | Your Premium Music Experience">
+                    <label for="seo-og-description" class="gradient-text">OG Description:</label>
+                    <textarea id="seo-og-description">Discover, play, and share your favorite music with Archer.</textarea>
+                    <label for="seo-og-image" class="gradient-text">OG Image URL:</label>
+                    <input type="text" id="seo-og-image" value="/frontend/favicon/favicon.ico">
+                    <label for="seo-og-url" class="gradient-text">OG URL:</label>
+                    <input type="text" id="seo-og-url" value="https://yourwebsite.com">
+                    <label for="seo-twitter-title" class="gradient-text">Twitter Title:</label>
+                    <input type="text" id="seo-twitter-title" value="Archer | Your Premium Music Experience">
+                    <label for="seo-twitter-description" class="gradient-text">Twitter Description:</label>
+                    <textarea id="seo-twitter-description">Discover, play, and share your favorite music with Archer.</textarea>
+                    <label for="seo-twitter-image" class="gradient-text">Twitter Image URL:</label>
+                    <input type="text" id="seo-twitter-image" value="/frontend/favicon/favicon.ico">
+                    <button type="button" onclick="toggleSEOForm()">Close</button>
+                </div>
+                <button class="btn-show-seo" onclick="toggleSEOForm()">Show SEO Information</button>
+            </section>
+            <section class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">1.2M</div>
+                    <div class="metric-label">Plays</div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        12%
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">300K</div>
+                    <div class="metric-label">Likes</div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        8%
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">50K</div>
+                    <div class="metric-label">Shares</div>
+                    <div class="metric-trend trend-down">
+                        <i class="fas fa-arrow-down"></i>
+                        5%
+                    </div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">10K</div>
+                    <div class="metric-label">Comments</div>
+                    <div class="metric-trend trend-up">
+                        <i class="fas fa-arrow-up"></i>
+                        15%
+                    </div>
+                </div>
+            </section>
+            <section class="deploy-info">
+                <h3 class="gradient-text">How to Deploy</h3>
+                <p class="gradient-text"><strong>GitHub Pages:</strong></p>
+                <ol class="gradient-text">
+                    <li>Create a GitHub repository and push your project files.</li>
+                    <li>Go to the repository settings and enable GitHub Pages.</li>
+                    <li>Select the branch to deploy from and save the settings.</li>
+                    <li>Your site will be available at `https://<username>.github.io/<repository-name>`.</li>
+                </ol>
+                <p class="gradient-text"><strong>Netlify:</strong></p>
+                <ol class="gradient-text">
+                    <li>Create a Netlify account and connect your GitHub repository.</li>
+                    <li>Follow the prompts to deploy your site.</li>
+                    <li>Netlify will provide a URL for your deployed site.</li>
+                </ol>
+                <p class="gradient-text"><strong>Vercel:</strong></p>
+                <ol class="gradient-text">
+                    <li>Create a Vercel account and import your GitHub repository.</li>
+                    <li>Follow the prompts to deploy your site.</li>
+                    <li>Vercel will provide a URL for your deployed site.</li>
+                </ol>
+                <p class="gradient-text"><strong>FTP to a Web Server:</strong></p>
+                <ol class="gradient-text">
+                    <li>Obtain FTP credentials from your web hosting provider.</li>
+                    <li>Use an FTP client to upload your project files to the web server.</li>
+                    <li>Your site will be available at your domain name.</li>
+                </ol>
+            </section>
+        </main>
+        <footer class="footer">
+            <div class="footer-content">
+                &copy; 2025 Archer. All rights reserved.
+            </div>
+            <div class="footer-social">
+                <a href="https://x.com/bniladridas" target="_blank">
+                    <img src="https://cdn.brandfetch.io/idS5WhqBbM/theme/light/logo.svg?c=1dxbfHSJFAPEGdCLU4o5B" alt="X Logo" style="height: 24px;">
+                </a>
+            </div>
+            <button class="back-to-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">
+                <i class="fas fa-arrow-up"></i>
+            </button>
+        </footer>
+    </div>
+    <script>
+        // JavaScript for handling search, volume control, dark mode toggle, lyrics display, comments, recommendations, and download option
+        document.getElementById('dark-mode').addEventListener('change', function() {
+            document.body.classList.toggle('coffee-theme', this.checked);
+        });
+
+        function toggleSEOForm() {
+            const seoForm = document.getElementById('seo-form');
+            seoForm.style.display = seoForm.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Add ripple effect on cursor move
+        document.addEventListener('mousemove', function(e) {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = `${e.clientX}px`;
+            ripple.style.top = `${e.clientY}px`;
+            document.body.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+
+        // Add more JavaScript functionality as needed
+    </script>
+</body>
+</html>
